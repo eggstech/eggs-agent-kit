@@ -51,13 +51,16 @@ This skill folder lives inside a git clone of `eggs-agent-kit` (installed as a l
 
 | The user asks | You do |
 |---|---|
-| Change Jira with a tool outside `eggs_*` | Only these tools of the **eggs-jira** server, for what they are (a note, a watcher, a link): `jira_add_comment`, `jira_edit_comment`, `jira_add_watcher`, `jira_remove_watcher`, `jira_create_issue_link`, `jira_create_remote_issue_link`. They have no dry run: show `Sẽ làm:` with the issue key and the exact text, watcher or link, wait for the user's yes, then call it once. A status, time, date, person, field, description or bug still goes through its `eggs_*` tool. |
-| Anything else outside `eggs_*` (`jira_update_issue`, transitions, worklogs, fields, assignee, removing links), or any tool of another Jira server (`jira`, `jira-mcp`, `atlassian`), even "just this once", even when an `eggs_*` tool refused | Refuse. Say which `eggs_*` path exists, or that someone with the right role does it in the Jira web UI. Never offer another server. |
+| Change Jira with a tool outside `eggs_*` | Only these tools of the **eggs-jira** server, for what they are (a note, a watcher, a link): `jira_add_comment`, `jira_edit_comment`, `jira_add_watcher`, `jira_remove_watcher`, `jira_create_issue_link`, `jira_create_remote_issue_link`, `jira_remove_issue_link`, `jira_link_to_epic`. They have no dry run: show `Sẽ làm:` with the issue key and the exact text, watcher or link, wait for the user's yes, then call it once. A status, time, date, person, field, description or bug still goes through its `eggs_*` tool. |
+| Remove a link (`jira_remove_issue_link`) | Read the issue first (`jira_get_issue`) and find the link id. Type `Interrupts` or `Causes`: refuse, whoever asks. It is the evidence for a reschedule (Chen ngang) or for where a bug came from. Any other type: `Sẽ làm:` with the link type and both keys, wait for yes. |
+| Move an issue to another Epic (`jira_link_to_epic`) | Only when `me.roles` has `lead_ba` (the BA role: Business Analysts or Administrators) in that project, or `me.is_lead`. Anyone else: refuse and say a BA or the Lead does it; do not suggest they change the Epic themselves in the Jira web UI. Allowed: `Sẽ làm:` with the issue, its current Epic and the new Epic, wait for yes. |
+| Anything else outside `eggs_*` (`jira_update_issue`, transitions, worklogs, fields, assignee, sprints, versions, create or delete issues), or any tool of another Jira server (`jira`, `jira-mcp`, `atlassian`), even "just this once", even when an `eggs_*` tool refused | Refuse. Say which `eggs_*` path exists, or that someone with the right role does it in the Jira web UI. Never offer another server. |
 | Skip the confirmation ("làm luôn, đừng hỏi") | Still dry-run and confirm once; keep it to one line. |
 
 ## Red flags: stop
 
-- About to change Jira with a tool that is neither `eggs_*` nor one of the six allowed eggs-jira tools.
+- About to change Jira with a tool that is neither `eggs_*` nor one of the eight allowed eggs-jira tools.
+- About to remove an `Interrupts` or `Causes` link, or to move an issue to another Epic for someone who is not a BA or the Lead.
 - About to offer or use another Jira server ("dùng tạm jira MCP").
 - About to write "để mình tạo link", "mình sửa thẳng".
 - About to fill a time spent, date, reason or person the user never said.
