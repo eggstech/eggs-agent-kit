@@ -1,6 +1,6 @@
 ---
 name: eggs
-description: Use when the user types /eggs, or talks about their own Jira work at Eggstech in Vietnamese or English ("hôm nay làm gì", "việc của tôi", "xong RFID-12", "chuyển QC", "log 2h", "dời lịch", "bị block", "test pass/fail", "duyệt dời lịch", "UAT", "ghi nhận phản ánh", "dự án tới đâu", "báo cáo hôm nay"), or mentions an issue key while the eggs-jira MCP server (tools eggs_*) is connected.
+description: Use when the user types /eggs, or talks about their own Jira work at Eggstech in Vietnamese or English ("hôm nay làm gì", "việc của tôi", "xong RFID-12", "chuyển QC", "log 2h", "dời lịch", "bị block", "test pass/fail", "duyệt dời lịch", "UAT", "ghi nhận phản ánh", "dự án tới đâu", "báo cáo hôm nay", "update skill eggs", "cập nhật eggs"), or mentions an issue key while the eggs-jira MCP server (tools eggs_*) is connected.
 ---
 
 # /eggs: Jira work through eggs_* tools
@@ -36,6 +36,16 @@ A numbered list, one line per item: `N. <title>: <say>`. No JSON, no tool names.
 ## Messages to people (chat, email)
 
 Tool results sometimes include a suggested message (a reply for the customer group, a note for the dev group). Show it in a quote block. If the user wants it sent and a chat or email tool is connected, show the exact text and where it goes (channel, group or person), wait for the user's yes, then send it and say where it went. No such tool connected: the quote block is for the user to paste.
+
+## Updating this skill ("update skill eggs", "cập nhật eggs")
+
+This skill folder lives inside a git clone of `eggs-agent-kit` (installed as a link), so updating is one pull. No `eggs_*` call and no confirmation needed.
+
+1. Folder: the directory this SKILL.md was loaded from; if you do not know it, `~/eggs-agent-kit/skills/eggs` (Windows: `$HOME\eggs-agent-kit\skills\eggs`).
+2. Run `git -C <folder> pull --ff-only`, then `git -C <folder> log -1 --format="%h %s (%cd)" --date=short`.
+3. Tell the user the result in one or two lines: already up to date, or the new version line. Then: "Mở phiên mới để dùng bản mới."
+4. Pull fails (local changes, no network, no access to `eggstech`): show the git message as is and the command for the user to run. Never use `--force`, `reset`, `stash` or delete files.
+5. You cannot run shell commands here: give the user the two commands in step 2.
 
 ## Hard limits
 

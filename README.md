@@ -36,7 +36,7 @@ Script hỏi PAT (gõ ẩn), rồi với mỗi công cụ có trên máy:
 - Cuối cùng gọi thử `eggs_whoami` trên server; báo lỗi nếu PAT hoặc URL sai (mã thoát 3).
 - Tham số khác: `--tools claude,cursor` (chỉ vài công cụ), `--skills-only`, `--no-verify`, `--dry-run`. PAT có thể đưa qua biến `EGGS_JIRA_PAT`.
 
-Cập nhật kit: `git pull` (skill là liên kết nên không cần cài lại). Đổi PAT: chạy lại `install.sh`.
+Cập nhật kit: gõ `update skill eggs` (hoặc `cập nhật eggs`) trong công cụ, agent tự `git pull`; hoặc tự chạy `git -C ~/eggs-agent-kit pull`. Skill là liên kết nên không cần cài lại, chỉ cần mở phiên mới. Đổi PAT: chạy lại `install.sh`.
 
 Kiểm tra bộ cài: `python3 -m unittest discover -s tests` (HOME giả, `claude` giả, server MCP giả; không đụng máy thật).
 
