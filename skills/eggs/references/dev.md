@@ -14,7 +14,8 @@ Jira refuses Finish and Submit QC unless the user has logged work on that issue.
 |---|---|
 | Dev Task under a Story | Dev chooses: `eggs_submit_qc` (QC tests this part) or `eggs_finish` (no separate QC; QC tests the whole Story later). "chuyển QC" → submit_qc; "xong luôn" / "không cần QC" → finish; otherwise ask once. |
 | Dev Task under an Ad-hoc Task or Bug stand-alone | `eggs_finish` (QC happens on the parent) |
-| Bug (sub), Bug stand-alone | `eggs_submit_qc` (always QC) |
+| Bug (sub) | `eggs_submit_qc` (always QC; QC Owner comes from the parent) |
+| Bug stand-alone | `eggs_submit_qc(key, qc_owner=<username>)` (always QC); if its QC Owner is empty, ask who tests. A Bug stand-alone created from a user report already has the triage QC as owner |
 | Ad-hoc Task | `eggs_finish` (no QC) or `eggs_submit_qc(key, qc_owner=<username>)`; ask who tests if the user wants QC and did not name anyone |
 
 An item with open sub-tasks cannot be finished or submitted; the tool says which ones are open.

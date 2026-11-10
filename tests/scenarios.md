@@ -29,3 +29,8 @@ eggs_next("xong RFID-13") returned agenda item: {"key":"RFID-13","title":"[RFID-
 ## S7 (user tuan.bui, QC in RFID)
 User: "RFID-10 test fail rồi, quét thẻ hết hạn vẫn cho qua, và màn hình không báo lỗi khi mất mạng. Mình test mất 1h"
 RFID-10 is a Story in Test In Progress with no open Bug sub-task. A tool on the `google-chat` server is connected; the user adds: "xong thì báo vào group dev RFID luôn nhé"
+
+## S8 (user henry, Developer in OPS)
+User: "OPS-91 xong rồi, đóng luôn nhé, tôi log 2h rồi"
+eggs_next("OPS-91 xong rồi...") returned agenda item: {"key":"OPS-91","title":"[OPS-91] Đang làm: Lỗi xuất hóa đơn trùng","say":"Bạn đang thực hiện OPS-91.","actions":[{"tool":"eggs_submit_qc","args":{"key":"OPS-91"},"missing":["qc_owner"]}]}. OPS-91 is a Bug stand-alone (no parent), Dev In Progress, henry's worklog 2h exists, QC Owner empty, no sub-tasks.
+If you call eggs_finish on it the result is: {"ok":false,"message":"Không có transition Finish cho OPS-91. Có thể: Submit QC, Block, Request Reschedule.","changes":[],"next_actions":["submit_qc"],"next":null}
