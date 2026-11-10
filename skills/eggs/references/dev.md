@@ -20,6 +20,10 @@ Jira refuses Finish and Submit QC unless the user has logged work on that issue.
 
 An item with open sub-tasks cannot be finished or submitted; the tool says which ones are open.
 
+## Creating and describing
+- A Dev creates a Bug stand-alone or an Ad-hoc Task (SKILL.md "Creating issues"), never a Story: a BA or QC creates Stories.
+- Notes on your own task go into its description: `eggs_update_description(key, text, mode="append")`.
+
 ## Delays and interruptions
 - Ask to move the end date: `eggs_request_reschedule(key, proposed_end, reason, interrupted_by?)`. A BA approves it; the date does not change until then.
 - Flag `NEED_RESCHEDULE` but the interruption does not affect the date: `eggs_request_reschedule(key, no_impact=true)`.

@@ -29,6 +29,28 @@ A numbered list, one line per item: `N. <title>: <say>`. No JSON, no tool names.
 | Block `blocked_by` | exactly one of `Nội bộ`, `Khách hàng`, `Bên thứ ba` |
 | Other fixed values (verdict, UAT action) | copy the exact value from the tool's parameter description; never translate it |
 
+## Creating issues (`eggs_create_issue`)
+
+One call per issue, dry run first. QC and BA create every type; a Dev creates `bug` and `adhoc` only. If a Dev asks for a Story, refuse and say a BA or QC creates it.
+
+| The user wants | `issue_type` | Arguments |
+|---|---|---|
+| Log a defect found while testing a Story or Ad-hoc Task (Test In Progress) | `bug_sub` | `parent=<key>`. This is the default while testing: the Dev fixes it during the test. Use `eggs_qc_fail` only when the user says the test failed or to send it back to Dev. |
+| A defect that is not part of a test in progress, or one found while testing a Bug stand-alone | `bug` (Bug stand-alone) | `related_to=<key>` when the user names an issue (the assignee then defaults to its assignee) |
+| A new flow | `story` | `epic` (required), `component` (see Components) |
+| A technical task outside any Story | `adhoc` | `epic` optional |
+
+## Components (Actor of a Story)
+
+The Component of a Story is the Actor whose flow it is: the people who work that screen and sign its UAT (for example `KH - KHÁCH HÀNG`, `KT - KẾ TOÁN`).
+1. Call `eggs_components(project)` first.
+2. Use an existing Component that fits. `ALL - CHUNG` only when the project has no Actor-specific Component; otherwise do not offer it, not even as an alternative.
+3. None fits: propose `<CODE> - <NAME>` (code 2–5 uppercase letters, for example `KT - KẾ TOÁN`) in the same `Sẽ làm:` list as the Story, wait for yes, then `eggs_create_component(project, code, name)` before `eggs_create_issue`. Never create a Component the user has not confirmed.
+
+## Descriptions (`eggs_update_description`)
+
+`mode`: `append` for "ghi thêm", `ac` for Acceptance Criteria, `replace` only when the user asks to rewrite the whole description. The dry run returns a diff: show it in the confirmation.
+
 ## When a tool says no
 
 `ok:false` is the answer, not an obstacle. Show `message` as is, then offer only what `next_actions` lists. Never repeat the same change through another tool.
