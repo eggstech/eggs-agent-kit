@@ -11,4 +11,4 @@
 ## User reports (phản ánh)
 - Record: `eggs_triage_open(project, text, source_url, reported_by, reported_at?)`. Ask for the message link and who reported it if missing.
 - Conclude: `eggs_triage_close(key, verdict, note, time_spent, bug_target?, link_key?)`. `verdict` is one of the values in the tool's parameter description; the verdict decides whether `bug_target` (Story key) or `link_key` (existing issue) is needed. Ask for `time_spent`.
-- The result contains a suggested reply for the customer group chat. Show it in a quote block for the QC to paste. You never send it.
+- The result contains a suggested reply for the customer group chat. Show it in a quote block; send it only as SKILL.md "Messages to people" says.
