@@ -15,7 +15,7 @@ scripts/install.py   bộ cài (install.sh / install.ps1 gọi file này)
 Cần: Python 3 (macOS có sẵn; Windows `winget install Python.Python.3.12`), Jira PAT của chính mình (Jira → Profile → Personal Access Tokens), URL MCP do Lead gửi.
 
 ```bash
-git clone <repo kit> ~/eggs-agent-kit && cd ~/eggs-agent-kit
+git clone https://github.com/eggstech/eggs-agent-kit ~/eggs-agent-kit && cd ~/eggs-agent-kit
 ./install.sh --url https://<máy chủ MCP>/mcp
 ```
 
