@@ -2,7 +2,7 @@
 
 ## Reschedule requests
 - See them: agenda items "Chờ duyệt dời lịch", or `eggs_pending_approvals(project?)`.
-- Decide: `eggs_decide_reschedule(key, approved, reason?, new_end?)`. Rejecting needs `reason`. Approving a different date than proposed: pass `new_end`.
+- Decide: `eggs_decide_reschedule(key, approved, reason?, new_end?)`. Rejecting needs `reason`. Approving a different date than proposed: pass `new_end` (YYYY-MM-DD); the dry run shows the date change. `new_end` is ignored on reject.
 - Nobody approves their own request; the server refuses it.
 
 ## Stories (flows)
@@ -28,7 +28,7 @@ Move a Story with `eggs_story_step(key, step, comment?)`, dry run first like eve
 `eggs_uat(epic, actor, action, note, bugs?, stories?)`; `action` is `start`, `signoff` or `fail`. `actor` is the Component code (for example `KH`).
 - `start`: every Story of that Actor in the Epic at Ready For UAT moves to UAT.
 - `signoff`: refused while some Story of the Actor has not reached UAT, unless `stories` lists the ones being signed.
-- `fail`: `stories` = the failing Stories, `bugs` = defects found.
+- `fail`: `bugs` maps each failing Story key to its new defect titles, for example `{"RFID-12": ["Sai tổng tiền"]}`. A Story with no new defect must still have an open Bug sub-task.
 
 ## Cancel
 `eggs_cancel(key, reason)`.

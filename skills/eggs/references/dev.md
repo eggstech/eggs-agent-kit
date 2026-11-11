@@ -28,7 +28,8 @@ An item with open sub-tasks cannot be finished or submitted; the tool says which
 ## Delays and interruptions
 - Ask to move the end date: `eggs_request_reschedule(key, proposed_end, reason, interrupted_by?)`. A BA approves it; the date does not change until then.
 - Flag `NEED_RESCHEDULE` but the interruption does not affect the date: `eggs_request_reschedule(key, no_impact=true)`.
-- Blocked: `eggs_block(key, reason, blocked_by)`; resolved: `eggs_unblock(key, note?)`.
+- Blocked: `eggs_block(key, reason, blocked_by)` (it also leaves the comment `Block (<blocked_by>): <reason>`); resolved: `eggs_unblock(key, note?)`.
+- Logging work never changes Remaining Estimate; Eggs plans with Original Estimate only.
 
 ## End of day
 `eggs_end_day(entries=[{key, time_spent, note, move_to}])`, `move_to` = `ready_for_qc`, `done` or omitted. Build one entry per issue the user mentions; apply the "Finishing" table to choose `move_to`. If the dry run says it is before 17:00, show that line and ask whether they are really ending the day.

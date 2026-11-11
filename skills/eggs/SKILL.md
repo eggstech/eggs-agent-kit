@@ -9,8 +9,8 @@ The `eggs-jira` MCP server owns every Jira rule. You only route the user to the 
 
 ## Every request: three steps
 
-1. **Who and what.** Call `eggs_next(text=<the user's words>)` (no `text` for a bare `/eggs`). It returns `me` (roles per project), `agenda` (items with `say` and ready `actions`) and `intents`. Read `references/<role>.md` for each role `me.roles` gives the user in the project concerned: `dev.md`, `qc.md`, `ba.md`, `lead.md` (`me.is_lead`).
-2. **Pick one call.** Prefer an agenda action whose `key` the user named; otherwise the intent that matches. Fill arguments from the agenda `args` and the user's words. Anything listed in `missing`, plus any time spent, date, reason, assignee or QC Owner the user did not say, you ask for: one short question that covers all of it.
+1. **Who and what.** Call `eggs_next(text=<the user's words>)` (no `text` for a bare `/eggs`). It returns `me` (roles per project), `agenda` (items with `say` and ready `actions`), `intents`, and `matched_intents` (up to 3 intent names ranked against the user's words, best first). Read `references/<role>.md` for each role `me.roles` gives the user in the project concerned: `dev.md`, `qc.md`, `ba.md`, `lead.md` (`me.is_lead`).
+2. **Pick one call.** Prefer an agenda action whose `key` the user named; otherwise start from `matched_intents[0]`, and check it against the user's words before using it. Fill arguments from the agenda `args` and the user's words. Anything listed in `missing`, plus any time spent, date, reason, assignee or QC Owner the user did not say, you ask for: one short question that covers all of it.
 3. **Dry run, confirm, write.** Call the tool with `dry_run=true`. Show `Sẽ làm:` and the `changes` lines, then wait for the user's yes. Call again with the same arguments and `dry_run=false`. Report `message`, then offer `next` (the following agenda item) if present.
 
 Several writes for one request (log work then submit QC): dry-run each, show them in one `Sẽ làm:` list, one confirmation, then run them in order and stop at the first `ok:false`.
