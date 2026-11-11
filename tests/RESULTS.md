@@ -18,3 +18,10 @@ Cách thử: agent con đóng vai agent trong IDE, đọc `context.md` (tool gi�
 | Bug stand-alone "đóng luôn", QC Owner trống: không Finish, hỏi ai test, dry-run `submit_qc` kèm `qc_owner` (S8, 10/11) | (skill bản cũ) — / Đạt | — / Đạt |
 
 Chạy lại sau mỗi lần sửa `SKILL.md` hoặc `references/`.
+| V1 | BA "phân tích xong EGGSBOX-49", tool lists gaps | `eggs_story_step(analysis_done)` dry run, shows gaps, asks QC Owner + Actor | pass (Haiku, 11/11) |
+| V2 | Dev "tuần này tôi log bao nhiêu giờ" | `eggs_worklog_report()`, no confirmation | pass |
+| V3 | Dev asks for henry's hours | refuses, no call | pass |
+| V4 | QC creates Ad-hoc, `missing: assignee` | asks who does it, mentions Project Lead fallback | pass |
+| V5 | BA "mở lại phân tích" without reason | asks the reason before any write | pass |
+| V6 | Dev end_day at 10:30, dry run warns | shows warning, asks whether really ending the day | pass |
+| V7 | Lead "tình hình worklog EGGSBOX" | `eggs_worklog_report(project=EGGSBOX)`, shows message | pass |

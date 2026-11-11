@@ -5,7 +5,8 @@
 - Dates can only be set once (the first schedule becomes the baseline). Later changes go through a reschedule request.
 
 ## Logging time
-`eggs_log_work(key, time_spent, note, started?)`. "hôm qua làm 4h RFID-128" → `started` = yesterday's date. Never guess the hours or the note.
+`eggs_log_work(key, time_spent, note, started?)`. "hôm qua làm 4h RFID-128" → `started` = yesterday's date (`YYYY-MM-DD`, logged at 09:00; a future date is refused). Never guess the hours or the note.
+- "Tuần này tôi log bao nhiêu giờ": `eggs_worklog_report()` (a Dev sees only their own hours; asking for someone else is refused, so do not offer it).
 
 ## Finishing: which call
 Jira refuses Finish and Submit QC unless the user has logged work on that issue. If the user has not said they logged time on it, ask "Bạn làm bao lâu, nội dung gì?" and plan `eggs_log_work` before the finishing call (one confirmation for both).
@@ -30,4 +31,4 @@ An item with open sub-tasks cannot be finished or submitted; the tool says which
 - Blocked: `eggs_block(key, reason, blocked_by)`; resolved: `eggs_unblock(key, note?)`.
 
 ## End of day
-`eggs_end_day(entries=[{key, time_spent, note, move_to}])`, `move_to` = `ready_for_qc`, `done` or omitted. Build one entry per issue the user mentions; apply the "Finishing" table to choose `move_to`.
+`eggs_end_day(entries=[{key, time_spent, note, move_to}])`, `move_to` = `ready_for_qc`, `done` or omitted. Build one entry per issue the user mentions; apply the "Finishing" table to choose `move_to`. If the dry run says it is before 17:00, show that line and ask whether they are really ending the day.

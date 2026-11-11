@@ -1,6 +1,6 @@
 ---
 name: eggs
-description: Use when the user types /eggs, or talks about their own Jira work at Eggstech in Vietnamese or English ("hôm nay làm gì", "việc của tôi", "xong RFID-12", "chuyển QC", "log 2h", "dời lịch", "bị block", "test pass/fail", "duyệt dời lịch", "UAT", "ghi nhận phản ánh", "dự án tới đâu", "báo cáo hôm nay", "update skill eggs", "cập nhật eggs"), or mentions an issue key while the eggs-jira MCP server (tools eggs_*) is connected.
+description: Use when the user types /eggs, or talks about their own Jira work at Eggstech in Vietnamese or English ("hôm nay làm gì", "việc của tôi", "xong RFID-12", "chuyển QC", "log 2h", "dời lịch", "bị block", "test pass/fail", "duyệt dời lịch", "UAT", "ghi nhận phản ánh", "dự án tới đâu", "báo cáo hôm nay", "tình hình worklog", "phân tích xong", "Ready For Dev", "đóng Epic", "update skill eggs", "cập nhật eggs"), or mentions an issue key while the eggs-jira MCP server (tools eggs_*) is connected.
 ---
 
 # /eggs: Jira work through eggs_* tools
@@ -31,7 +31,7 @@ A numbered list, one line per item: `N. <title>: <say>`. No JSON, no tool names.
 
 ## Creating issues (`eggs_create_issue`)
 
-One call per issue, dry run first. QC and BA create every type; a Dev creates `bug` and `adhoc` only. If a Dev asks for a Story, refuse and say a BA or QC creates it.
+One call per issue, dry run first. QC and BA create every type; a Dev creates `bug` and `adhoc` only. If a Dev asks for a Story, refuse and say a BA or QC creates it. Never leave the assignee to Jira (it would pick the Project Lead): without `assignee` the server uses the creator only when they do that work (a Dev's bug or Ad-hoc, a BA's Story); otherwise it returns `missing: ["assignee"]`, so ask who does it.
 
 | The user wants | `issue_type` | Arguments |
 |---|---|---|
@@ -46,6 +46,10 @@ The Component of a Story is the Actor whose flow it is: the people who work that
 1. Call `eggs_components(project)` first.
 2. Use an existing Component that fits. `ALL - CHUNG` only when the project has no Actor-specific Component; otherwise do not offer it, not even as an alternative.
 3. None fits: propose `<CODE> - <NAME>` (code 2–5 uppercase letters, for example `KT - KẾ TOÁN`) in the same `Sẽ làm:` list as the Story, wait for yes, then `eggs_create_component(project, code, name)` before `eggs_create_issue`. Never create a Component the user has not confirmed.
+
+## Worklog questions (`eggs_worklog_report`)
+
+"Tình hình worklog", "ai chưa log giờ", "tuần này log bao nhiêu giờ" → `eggs_worklog_report(project?, person?, date_from?, date_to?)`, read-only, no confirmation. Never add up `jira_get_worklog` results yourself. A BA or the Lead sees the team; anyone else only their own hours.
 
 ## Descriptions (`eggs_update_description`)
 
