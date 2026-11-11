@@ -11,7 +11,7 @@
 - An Ad-hoc Task or Bug stand-alone with open sub-tasks cannot pass; the tool lists them.
 
 ## User reports (phản ánh)
-- Record: `eggs_triage_open(project, text, source_url, reported_by, reported_at?)`. Ask for the message link and who reported it if missing.
+- Record: `eggs_triage_open(project, text, source_url, reported_by, reported_at?, assignee?)`. Ask for the message link and who reported it if missing, and in the same question who should handle it (`assignee`, a Jira username). If the user names nobody, leave `assignee` empty: the report stays unassigned.
 - Conclude: `eggs_triage_close(key, verdict, note, time_spent, bug_target?, bug_summary?, link_key?)`. Ask for `time_spent`.
   - `verdict` is exactly one of: `bug`, `guidance`, `feature`, `data_fix`, `duplicate`, `cannot_reproduce`, `third_party`.
   - `bug`: `bug_target` = the Story or Ad-hoc Task the Bug sub-task goes under; leave it empty for a Bug stand-alone in the [OPS] Epic. `bug_summary` = the Bug title if the user gave one.

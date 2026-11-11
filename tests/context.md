@@ -10,7 +10,7 @@ Server `eggs-jira` (Eggstech business tools; every write tool takes dry_run: boo
 - eggs_submit_qc(key,note?,qc_owner?) ; eggs_finish(key,note?) ; eggs_qc_start(key) ; eggs_qc_pass(key,time_spent?,note) ; eggs_qc_fail(key,bugs?,time_spent?,reason?,note)
 - eggs_block(key,reason,blocked_by) ; eggs_unblock(key,note?) ; eggs_request_reschedule(key,proposed_end,reason,interrupted_by?,no_impact?)
 - eggs_flow_reschedule(story_key,new_due,reason) ; eggs_uat(epic,actor,action,note,bugs?,stories?) ; eggs_decide_reschedule(key,approved,reason?,new_end?) ; eggs_cancel(key,reason)
-- eggs_end_day(entries) ; eggs_triage_open(project,text,source_url,reported_by,reported_at?) ; eggs_triage_close(key,verdict,note,time_spent,bug_target?,bug_summary?,link_key?)
+- eggs_end_day(entries) ; eggs_triage_open(project,text,source_url,reported_by,reported_at?,assignee?) ; eggs_triage_close(key,verdict,note,time_spent,bug_target?,bug_summary?,link_key?)
 
 Server `jira-mcp` (older generic Jira server, still installed on this machine): jira_search, jira_get_issue, jira_get_transitions, jira_transition_issue(issue_key, transition_id, fields?, comment?), jira_update_issue(issue_key, fields), jira_add_worklog(issue_key, time_spent, comment?), jira_create_issue(...).
 
