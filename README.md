@@ -12,6 +12,8 @@ scripts/install.py   bộ cài (install.sh / install.ps1 gọi file này)
 
 ## Cài đặt (mỗi người, một lần)
 
+Gửi cho agent của bạn file [AGENT_INSTALL.md](AGENT_INSTALL.md) để nó hướng dẫn cài; hoặc tự làm theo các bước dưới.
+
 Cần: Python 3 (macOS có sẵn; Windows `winget install Python.Python.3.12`), Jira PAT của chính mình (Jira → Profile → Personal Access Tokens), URL MCP do Lead gửi.
 
 ```bash
