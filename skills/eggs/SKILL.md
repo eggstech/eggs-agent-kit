@@ -15,9 +15,18 @@ The `eggs-jira` MCP server owns every Jira rule. You only route the user to the 
 
 Several writes for one request (log work then submit QC): dry-run each, show them in one `Sẽ làm:` list, one confirmation, then run them in order and stop at the first `ok:false`.
 
+## Issue keys in your replies
+
+Every issue key you show the user is a link with its type: `[EGG-12](https://jira.eggstech.io.vn/browse/EGG-12) (Bug)`. This holds in agenda lines, `Sẽ làm:` lists, `message`, reports and tables.
+
+- Take `url` and `type` from `issue_links` in the tool result.
+- A key that is not in `issue_links` (from a `jira_*` tool or the user's words): link `https://jira.eggstech.io.vn/browse/<KEY>`; give the type if the data you have shows it.
+- `type` is null: the link alone.
+- Suggested messages for other people (chat quote blocks) stay as the tool wrote them.
+
 ## Showing the agenda (bare /eggs)
 
-A numbered list, one line per item: `N. <title>: <say>`. No JSON, no tool names. End with one question asking what to do. A number from the user selects the item, not the action: if the item has more than one action (approve or reject, finish or submit QC), ask which one.
+A numbered list, one line per item: `N. <linked key> (<type>) <title>: <say>`. No JSON, no tool names. End with one question asking what to do. A number from the user selects the item, not the action: if the item has more than one action (approve or reject, finish or submit QC), ask which one.
 
 ## Arguments
 
