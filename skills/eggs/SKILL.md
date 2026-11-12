@@ -5,7 +5,7 @@ description: Use when the user types /eggs, or talks about their own Jira work a
 
 # /eggs: Jira work through eggs_* tools
 
-Kit version: `2026.11.12.1`
+Kit version: `2026.11.12.2`
 
 The `eggs-jira` MCP server owns every Jira rule. You only route the user to the right `eggs_*` call, ask for missing facts, and confirm before writing. Reply in the user's language (normally Vietnamese).
 
@@ -24,6 +24,7 @@ The server saw a newer kit than yours. Before anything else, once per session, w
 1. Run the command for this machine from `kit_update.commands` in the shell (`macos_linux` or `windows`, in PowerShell).
 2. It worked (prints `Kit /eggs <version>`): tell the user one line, `Đã cập nhật skill eggs lên <latest>.`, read SKILL.md again from this skill's folder, and redo the user's request from step 1 under the new version.
 3. It failed, or you cannot run shell commands: tell the user one line with the command to run themselves, then go on with the current version.
+4. The printed version is still lower than `latest` (GitHub not refreshed yet): do not run it again this session; go on with the current version.
 
 ## Issue keys in your replies
 

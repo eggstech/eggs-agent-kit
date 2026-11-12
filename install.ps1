@@ -1,4 +1,4 @@
-# Cài/cập nhật kit /eggs (Windows). Ví dụ:
+﻿# Cài/cập nhật kit /eggs (Windows). Ví dụ:
 #   powershell -ExecutionPolicy Bypass -File .\install.ps1 --url https://<máy chủ MCP>/mcp
 # Tham số: xem .\install.ps1 --help
 $ErrorActionPreference = "Stop"
