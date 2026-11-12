@@ -21,8 +21,24 @@ Jira refuses Finish and Submit QC unless the user has logged work on that issue.
 
 An item with open sub-tasks cannot be finished or submitted; the tool says which ones are open.
 
+## Splitting work: your own Dev Task
+Each Dev creates the Dev Task for their own part; the BA does not split work for Devs. `eggs_create_issue(project, issue_type="dev_task", parent, summary, part, estimate)`, dry run first. Ask for `part` and `estimate` if the user did not give them; the server lists the valid Parts. `eggs_plan_apply` is not needed and the Story needs no Epic.
+
+What the server does with the parent's status (show its message as is when it refuses):
+
+| Parent | Status | Result |
+|---|---|---|
+| Story | Open, Analyzed | Created; it can Start only once the BA moves the Story to Ready For Dev |
+| Story | Ready For Dev, Dev In Progress | Created |
+| Story | QC TO DO, Test In Progress, Ready For UAT | Refused with `missing: ["confirm_reopen"]`: the Story would go back to Dev In Progress. If the user is reporting a defect, use a Bug sub-task instead. Otherwise ask the user, then call again with `confirm_reopen=true` |
+| Story | Wait For Review, Done, Cancelled | Refused: a change after UAT or after Done is a new Story (BA) linked "relates to" the old one |
+| Ad-hoc Task, Bug stand-alone | DEV To Do, Dev In Progress | Created |
+| Ad-hoc Task, Bug stand-alone | QC TO DO, Test In Progress, Done, Cancelled | Refused: QC Fail first to bring it back, or a new issue |
+
+After creating it, schedule and start it as usual (`eggs_start(key, start, end, estimate)`). The server warns when you already have an open Dev Task with the same Part under that parent; ask before keeping both.
+
 ## Creating and describing
-- A Dev creates a Bug stand-alone or an Ad-hoc Task (SKILL.md "Creating issues"), never a Story: a BA or QC creates Stories.
+- A Dev creates a Bug stand-alone, an Ad-hoc Task or their own Dev Task (SKILL.md "Creating issues"), never a Story: a BA or QC creates Stories.
 - Notes on your own task go into its description: `eggs_update_description(key, text, mode="append")`.
 
 ## Delays and interruptions

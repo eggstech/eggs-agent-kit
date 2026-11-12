@@ -5,7 +5,7 @@ description: Use when the user types /eggs, or talks about their own Jira work a
 
 # /eggs: Jira work through eggs_* tools
 
-Kit version: `2026.11.12.2`
+Kit version: `2026.11.12.3`
 
 The `eggs-jira` MCP server owns every Jira rule. You only route the user to the right `eggs_*` call, ask for missing facts, and confirm before writing. Reply in the user's language (normally Vietnamese).
 
@@ -51,7 +51,7 @@ A numbered list, one line per item: `N. <linked key> (<type>) <title>: <say>`. N
 
 ## Creating issues (`eggs_create_issue`)
 
-One call per issue, dry run first. QC and BA create every type; a Dev creates `bug` and `adhoc` only. If a Dev asks for a Story, refuse and say a BA or QC creates it. Never leave the assignee to Jira (it would pick the Project Lead): without `assignee` the server uses the creator only when they do that work (a Dev's bug or Ad-hoc, a BA's Story); otherwise it returns `missing: ["assignee"]`, so ask who does it.
+One call per issue, dry run first. QC and BA create every type except `dev_task`; a Dev creates `bug`, `adhoc` and `dev_task`. If a Dev asks for a Story, refuse and say a BA or QC creates it. Never leave the assignee to Jira (it would pick the Project Lead): without `assignee` the server uses the creator only when they do that work (a Dev's bug or Ad-hoc, a BA's Story); otherwise it returns `missing: ["assignee"]`, so ask who does it.
 
 | The user wants | `issue_type` | Arguments |
 |---|---|---|
@@ -59,6 +59,7 @@ One call per issue, dry run first. QC and BA create every type; a Dev creates `b
 | A defect that is not part of a test in progress, or one found while testing a Bug stand-alone | `bug` (Bug stand-alone) | `related_to=<key>` when the user names an issue (the assignee then defaults to its assignee) |
 | A new flow | `story` | `epic` (required), `component` (see Components) |
 | A technical task outside any Story | `adhoc` | `epic` optional |
+| The Dev's own part of a Story, Ad-hoc Task or Bug stand-alone ("chia việc", "tạo subtask/Dev Task") | `dev_task` | `parent`, `part`, `estimate`; the assignee defaults to the creator. No Epic needed. See `references/dev.md` "Splitting work". |
 
 ## Components (Actor of a Story)
 

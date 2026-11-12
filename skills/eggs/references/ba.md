@@ -8,7 +8,7 @@
 ## Stories (flows)
 Status meaning:
 - **Open**: the BA is analysing.
-- **Analyzed**: the BA's material is complete. Devs add Dev Tasks (Part + estimate).
+- **Analyzed**: the BA's material is complete. Each Dev adds their own Dev Task (Part + estimate) with `eggs_create_issue(issue_type="dev_task")`; the BA does not split work for Devs.
 - **Ready For Dev**: the Due Date is set and Devs can start.
 
 Move a Story with `eggs_story_step(key, step, comment?)`, dry run first like every write. Only a BA or the Lead may call it; the server checks everything below and lists every gap in one message: show it as is and ask for the missing facts.
