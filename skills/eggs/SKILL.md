@@ -5,15 +5,25 @@ description: Use when the user types /eggs, or talks about their own Jira work a
 
 # /eggs: Jira work through eggs_* tools
 
+Kit version: `2026.11.12.1`
+
 The `eggs-jira` MCP server owns every Jira rule. You only route the user to the right `eggs_*` call, ask for missing facts, and confirm before writing. Reply in the user's language (normally Vietnamese).
 
 ## Every request: three steps
 
-1. **Who and what.** Call `eggs_next(text=<the user's words>)` (no `text` for a bare `/eggs`). It returns `me` (roles per project), `agenda` (items with `say` and ready `actions`), `intents`, and `matched_intents` (up to 3 intent names ranked against the user's words, best first). Read `references/<role>.md` for each role `me.roles` gives the user in the project concerned: `dev.md`, `qc.md`, `ba.md`, `lead.md` (`me.is_lead`).
+1. **Who and what.** Call `eggs_next(text=<the user's words>, kit="<Kit version above>")` (no `text` for a bare `/eggs`). If the result has `kit_update`, update first (next section), then continue. It returns `me` (roles per project), `agenda` (items with `say` and ready `actions`), `intents`, and `matched_intents` (up to 3 intent names ranked against the user's words, best first). Read `references/<role>.md` for each role `me.roles` gives the user in the project concerned: `dev.md`, `qc.md`, `ba.md`, `lead.md` (`me.is_lead`).
 2. **Pick one call.** Prefer an agenda action whose `key` the user named; otherwise start from `matched_intents[0]`, and check it against the user's words before using it. Fill arguments from the agenda `args` and the user's words. Anything listed in `missing`, plus any time spent, date, reason, assignee or QC Owner the user did not say, you ask for: one short question that covers all of it.
 3. **Dry run, confirm, write.** Call the tool with `dry_run=true`. Show `Sẽ làm:` and the `changes` lines, then wait for the user's yes. Call again with the same arguments and `dry_run=false`. Report `message`, then offer `next` (the following agenda item) if present.
 
 Several writes for one request (log work then submit QC): dry-run each, show them in one `Sẽ làm:` list, one confirmation, then run them in order and stop at the first `ok:false`.
+
+## Kit update (`kit_update` in the `eggs_next` result)
+
+The server saw a newer kit than yours. Before anything else, once per session, with no confirmation:
+
+1. Run the command for this machine from `kit_update.commands` in the shell (`macos_linux` or `windows`, in PowerShell).
+2. It worked (prints `Kit /eggs <version>`): tell the user one line, `Đã cập nhật skill eggs lên <latest>.`, read SKILL.md again from this skill's folder, and redo the user's request from step 1 under the new version.
+3. It failed, or you cannot run shell commands: tell the user one line with the command to run themselves, then go on with the current version.
 
 ## Issue keys in your replies
 
@@ -87,13 +97,12 @@ Tool results sometimes include a suggested message (a reply for the customer gro
 
 ## Updating this skill ("update skill eggs", "cập nhật eggs")
 
-This skill folder lives inside a git clone of `eggs-agent-kit` (installed as a link), so updating is one pull. No `eggs_*` call and no confirmation needed.
+No `eggs_*` call and no confirmation needed. Run in the shell, then tell the user the printed `Kit /eggs <version>` line and "Mở phiên mới để dùng bản mới.":
 
-1. Folder: the directory this SKILL.md was loaded from; if you do not know it, `~/eggs-agent-kit/skills/eggs` (Windows: `$HOME\eggs-agent-kit\skills\eggs`).
-2. Run `git -C <folder> pull --ff-only`, then `git -C <folder> log -1 --format="%h %s (%cd)" --date=short`.
-3. Tell the user the result in one or two lines: already up to date, or the new version line. Then: "Mở phiên mới để dùng bản mới."
-4. Pull fails (local changes, no network, no access to `eggstech`): show the git message as is and the command for the user to run. Never use `--force`, `reset`, `stash` or delete files.
-5. You cannot run shell commands here: give the user the two commands in step 2.
+- macOS / Linux: `curl -fsSL https://raw.githubusercontent.com/eggstech/eggs-agent-kit/main/get.sh | sh -s -- --update`
+- Windows (PowerShell): `$env:EGGS_KIT_UPDATE='1'; irm https://raw.githubusercontent.com/eggstech/eggs-agent-kit/main/get.ps1 | iex`
+
+It fails: show the message as is and the command for the user to run. Never use `--force`, `reset`, `stash` or delete files. You cannot run shell commands here: give the user the command.
 
 ## Hard limits
 

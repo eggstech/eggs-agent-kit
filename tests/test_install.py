@@ -218,5 +218,86 @@ class InstallTest(unittest.TestCase):
         self.assertEqual((backups[0] / "SKILL.md").read_text(), "old")
 
 
+class GetScriptTest(unittest.TestCase):
+    """get.sh: one-line install and update without git (archive from a file:// URL)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        root = Path(self.tmp.name)
+        self.home = root / "home"
+        (self.home / ".claude").mkdir(parents=True)
+        self.bin = root / "bin"
+        self.bin.mkdir()
+        for name, body in (("claude", "exit 0"), ("git", f'echo "$@" >> {root}/git.log')):
+            f = self.bin / name
+            f.write_text(f"#!/bin/sh\n{body}\n")
+            f.chmod(0o755)
+        self.git_log = root / "git.log"
+        self.archive = root / "kit.tar.gz"
+        import tarfile
+        with tarfile.open(self.archive, "w:gz") as tar:
+            for path in KIT.rglob("*"):
+                rel = path.relative_to(KIT)
+                if rel.parts[0] in (".git", "__pycache__") or "__pycache__" in rel.parts:
+                    continue
+                if path.is_file():
+                    tar.add(path, arcname=f"eggs-agent-kit-main/{rel}")
+        self.kit_dir = self.home / "eggs-agent-kit"
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def run_get(self, *args, archive=None):
+        env = {
+            "HOME": str(self.home),
+            "PATH": f"{self.bin}:{Path(sys.executable).parent}:/usr/bin:/bin",
+            "EGGS_KIT_ARCHIVE_URL": f"file://{archive or self.archive}",
+        }
+        return subprocess.run(["sh", str(KIT / "get.sh"), *args], env=env,
+                              capture_output=True, text=True, timeout=60)
+
+    def test_fresh_install_links_skill_without_git(self):
+        r = self.run_get("--skills-only", "--tools", "claude")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Kit /eggs 20", r.stdout)
+        link = self.home / ".claude/skills/eggs"
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(link.resolve(), (self.kit_dir / "skills/eggs").resolve())
+        self.assertFalse(self.git_log.exists())
+
+    def test_update_replaces_files_and_keeps_link(self):
+        self.assertEqual(self.run_get("--skills-only", "--tools", "claude").returncode, 0)
+        stale = self.kit_dir / "skills/eggs/STALE.md"
+        stale.write_text("old")
+        r = self.run_get("--update")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Đã cập nhật", r.stdout)
+        self.assertFalse(stale.exists())
+        self.assertTrue((self.home / ".claude/skills/eggs/SKILL.md").exists())
+        self.assertEqual(list(self.home.glob("eggs-agent-kit.old.*")), [])
+
+    def test_update_of_git_clone_uses_git_pull(self):
+        (self.kit_dir / ".git").mkdir(parents=True)
+        (self.kit_dir / "skills/eggs").mkdir(parents=True)
+        (self.kit_dir / "skills/eggs/SKILL.md").write_text("Kit version: `2026.1.1.1`")
+        r = self.run_get("--update")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("pull --ff-only", self.git_log.read_text())
+        self.assertIn("Kit /eggs 2026.1.1.1", r.stdout)
+
+    def test_bad_archive_keeps_existing_kit(self):
+        self.assertEqual(self.run_get("--skills-only", "--tools", "claude").returncode, 0)
+        bad = Path(self.tmp.name) / "bad.tar.gz"
+        bad.write_bytes(b"not an archive")
+        r = self.run_get("--update", archive=bad)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertTrue((self.kit_dir / "skills/eggs/SKILL.md").exists())
+
+    def test_skill_has_kit_version_line(self):
+        import re
+        text = (KIT / "skills/eggs/SKILL.md").read_text()
+        self.assertRegex(text, re.compile(r"Kit version: `\d{4}\.\d{1,2}\.\d{1,2}\.\d+`"))
+
+
 if __name__ == "__main__":
     unittest.main()

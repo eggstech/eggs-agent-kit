@@ -4,37 +4,27 @@ Bạn là agent trong IDE của một thành viên Eggstech. Hãy cài skill `/e
 
 **Không bao giờ hỏi, đọc, in hay tự nhập Jira PAT của người dùng.** PAT do chính người dùng gõ vào terminal.
 
-## 1. Lấy kit
+## 1. Kiểm tra Python
 
-Nếu `~/eggs-agent-kit` đã có thì cập nhật, chưa có thì clone:
+Cần Python 3: kiểm tra bằng `python3 --version` (Windows: `python --version`). Nếu chưa có, trên Windows hướng dẫn người dùng cài bằng `winget install Python.Python.3.12`. Không cần git.
 
-```bash
-git -C ~/eggs-agent-kit pull || git clone https://github.com/eggstech/eggs-agent-kit ~/eggs-agent-kit
-```
+## 2. Người dùng tự chạy lệnh cài
 
-Windows (PowerShell): thay `~` bằng `$HOME`.
-
-Nếu clone báo lỗi quyền truy cập: dừng lại và nhắn người dùng "Tài khoản GitHub của bạn chưa được thêm vào repo eggstech/eggs-agent-kit, nhờ Lead thêm."
-
-Cần Python 3: kiểm tra bằng `python3 --version` (Windows: `python --version`). Nếu chưa có, trên Windows hướng dẫn người dùng cài bằng `winget install Python.Python.3.12`.
-
-## 2. Người dùng tự chạy bộ cài
-
-Bộ cài hỏi PAT ở chế độ gõ ẩn, nên **người dùng phải tự chạy lệnh này trong terminal của họ**. Không chạy hộ.
+Lệnh cài tải kit về `~/eggs-agent-kit` (không cần git clone) rồi hỏi PAT ở chế độ gõ ẩn, nên **người dùng phải tự chạy lệnh này trong terminal của họ**. Không chạy hộ.
 
 Hướng dẫn người dùng:
 
 1. Tạo PAT: Jira → ảnh đại diện → Profile → Personal Access Tokens → Create token.
-2. Mở terminal và chạy lệnh tương ứng:
+2. Mở terminal và chạy một lệnh:
 
    macOS / Linux:
    ```bash
-   cd ~/eggs-agent-kit && ./install.sh --url https://jira.eggstech.io.vn/eggs-mcp/mcp
+   curl -fsSL https://raw.githubusercontent.com/eggstech/eggs-agent-kit/main/get.sh | sh
    ```
 
    Windows (PowerShell):
    ```powershell
-   cd $HOME\eggs-agent-kit; powershell -ExecutionPolicy Bypass -File .\install.ps1 --url https://jira.eggstech.io.vn/eggs-mcp/mcp
+   irm https://raw.githubusercontent.com/eggstech/eggs-agent-kit/main/get.ps1 | iex
    ```
 
 3. Dán PAT khi được hỏi, rồi Enter.
@@ -61,10 +51,12 @@ Nếu agent báo "chưa có vai trò trong dự án nào": nhờ Lead thêm ngư
 
 ## Cập nhật sau này
 
-Người dùng gõ `update skill eggs` trong IDE, hoặc tự chạy:
+Tự động: mỗi lần dùng `/eggs`, server báo nếu có bản mới và agent tự cập nhật. Muốn cập nhật tay: gõ `update skill eggs` trong IDE, hoặc chạy:
 
 ```bash
-git -C ~/eggs-agent-kit pull
+curl -fsSL https://raw.githubusercontent.com/eggstech/eggs-agent-kit/main/get.sh | sh -s -- --update
 ```
 
-Sau đó mở phiên mới. Chỉ cần chạy lại bộ cài khi đổi PAT.
+Windows (PowerShell): `$env:EGGS_KIT_UPDATE='1'; irm https://raw.githubusercontent.com/eggstech/eggs-agent-kit/main/get.ps1 | iex`
+
+Máy đã cài bằng git clone vẫn dùng được các lệnh này (chúng chạy `git pull`). Chỉ cần chạy lại lệnh cài ở bước 2 khi đổi PAT.
