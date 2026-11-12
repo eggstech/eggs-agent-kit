@@ -55,6 +55,19 @@ The Component of a Story is the Actor whose flow it is: the people who work that
 
 `mode`: `append` for "ghi thêm", `ac` for Acceptance Criteria, `replace` only when the user asks to rewrite the whole description. The dry run returns a diff: show it in the confirmation.
 
+## Comments and files (`eggs_comment`, `eggs_attach_url`)
+
+Any issue the user can see, in any status.
+
+- Comment: `eggs_comment(key, text)`. Dry run first, show the exact text, call again on yes.
+- Attach files (screenshot, log, video, test evidence):
+  1. Confirm once: `Sẽ làm: đính kèm <tên file> vào <KEY>` plus the comment text if any. Wait for yes.
+  2. `eggs_attach_url(key, comment?)` returns `url` and `command`. Give `comment` when the files need a note: images then show inside that comment.
+  3. Run in the shell: `curl -sS -F "file=@<path>" "<url>"`, one `-F "file=@..."` per file (at most 10, 20 MB each). Windows PowerShell: `curl.exe`, not `curl`.
+  4. The reply is JSON: show `message`. `403` means the link was used or is older than 10 minutes: call `eggs_attach_url` again. Each link works once.
+- The upload link acts as the user's Jira login for 10 minutes: never show it in a message to anyone else, never reuse it.
+- No shell here: tell the user to drag the file onto the issue in the Jira web UI. Never send a file as base64 or text through a tool.
+
 ## When a tool says no
 
 `ok:false` is the answer, not an obstacle. Show `message` as is, then offer only what `next_actions` lists. Never repeat the same change through another tool.
@@ -91,3 +104,4 @@ This skill folder lives inside a git clone of `eggs-agent-kit` (installed as a l
 - About to write "để mình tạo link", "mình sửa thẳng".
 - About to fill a time spent, date, reason or person the user never said.
 - About to call a write tool without `dry_run=true` first.
+- About to paste an upload link from `eggs_attach_url` into a chat, or to use it twice.

@@ -2,6 +2,7 @@
 
 ## Testing
 - Queue: agenda items "Chờ kiểm thử". Start: `eggs_qc_start(key)`. QC Pass works only after QC Start (status Test In Progress); otherwise the tool says which step is missing.
+- Evidence (screenshots, logs): attach them to the tested issue before Pass or Fail, as SKILL.md "Comments and files" says, with a comment of what was tested and the result.
 - Pass: `eggs_qc_pass(key, note, time_spent?)`. A **Story** needs the QC's own worklog: ask for `time_spent` if not given. For a part (Dev Task, Bug, Ad-hoc) time is optional.
 - Defect found while testing a Story or Ad-hoc Task: log it at once as a Bug sub-task, `eggs_create_issue(project, issue_type="bug_sub", parent=<key>, summary)`, one per defect. The item stays in Test In Progress and the Dev fixes it meanwhile. QC Pass is refused until every sub-task is Done or Cancelled.
 - Defect found while testing a Bug stand-alone, or after the test: a new Bug stand-alone with `related_to=<key>` (no Bug sub-task under a Bug stand-alone). Do not ask the user to pass or fail the tested item first.

@@ -11,6 +11,7 @@ Server `eggs-jira` (Eggstech business tools; every write tool takes dry_run: boo
 - eggs_block(key,reason,blocked_by) ; eggs_unblock(key,note?) ; eggs_request_reschedule(key,proposed_end,reason,interrupted_by?,no_impact?)
 - eggs_flow_reschedule(story_key,new_due,reason) ; eggs_uat(epic,actor,action,note,bugs?,stories?) ; eggs_decide_reschedule(key,approved,reason?,new_end?) ; eggs_cancel(key,reason)
 - eggs_end_day(entries) ; eggs_triage_open(project,text,source_url,reported_by,reported_at?,assignee?) ; eggs_triage_close(key,verdict,note,time_spent,bug_target?,bug_summary?,link_key?)
+- eggs_comment(key,text) ; eggs_attach_url(key,comment?) -> {ok,message,url,command} (one-time upload link, 10 min; the agent runs `curl -sS -F "file=@<path>" "<url>"` in its shell)
 
 Server `jira-mcp` (older generic Jira server, still installed on this machine): jira_search, jira_get_issue, jira_get_transitions, jira_transition_issue(issue_key, transition_id, fields?, comment?), jira_update_issue(issue_key, fields), jira_add_worklog(issue_key, time_spent, comment?), jira_create_issue(...).
 
