@@ -5,7 +5,7 @@ description: Use when the user types /eggs, or talks about their own Jira work a
 
 # /eggs: Jira work through eggs_* tools
 
-Kit version: `2026.11.12.3`
+Kit version: `2026.11.16.1`
 
 The `eggs-jira` MCP server owns every Jira rule. You only route the user to the right `eggs_*` call, ask for missing facts, and confirm before writing. Reply in the user's language (normally Vietnamese).
 

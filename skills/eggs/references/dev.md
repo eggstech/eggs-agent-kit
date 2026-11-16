@@ -35,6 +35,8 @@ What the server does with the parent's status (show its message as is when it re
 | Ad-hoc Task, Bug stand-alone | DEV To Do, Dev In Progress | Created |
 | Ad-hoc Task, Bug stand-alone | QC TO DO, Test In Progress, Done, Cancelled | Refused: QC Fail first to bring it back, or a new issue |
 
+The Dev Task takes the parent's QC Owner automatically; do not ask who tests it. If someone else should test it, that person changes QC Owner on the Dev Task in Jira.
+
 After creating it, schedule and start it as usual (`eggs_start(key, start, end, estimate)`). The server warns when you already have an open Dev Task with the same Part under that parent; ask before keeping both.
 
 ## Creating and describing

@@ -32,3 +32,6 @@ Move a Story with `eggs_story_step(key, step, comment?)`, dry run first like eve
 
 ## Cancel
 `eggs_cancel(key, reason)`.
+
+## Changing a Story's QC Owner
+Open Dev Tasks keep the old QC Owner until synced. After changing it (in Jira or with `eggs_plan_apply`), follow `references/qc.md` "QC Owner of Dev Tasks": dry run, show the list, apply on yes.

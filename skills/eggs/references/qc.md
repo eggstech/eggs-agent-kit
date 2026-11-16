@@ -11,6 +11,12 @@
   - Dev Task, Bug, Ad-hoc Task: a comment describing the defect (`note`) is enough.
 - An Ad-hoc Task or Bug stand-alone with open sub-tasks cannot pass; the tool lists them.
 
+## QC Owner of Dev Tasks
+- A Dev Task gets its parent's QC Owner when it is created. To hand one Dev Task to another tester, change QC Owner on that Dev Task in Jira; nothing else changes.
+- When a Story's (or Ad-hoc Task's, Bug stand-alone's) QC Owner changes, its open Dev Tasks do not follow by themselves. The agenda then shows "N Dev Task chưa theo QC Owner" to the new QC Owner and the Lead BA.
+- To move them: `eggs_sync_qc_owner(key=<parent>)` (dry run by default). Show its `changes` list, which only covers Dev Tasks that are empty or still on a previous QC Owner of the parent. Dev Tasks someone handed to another tester are kept and named in `message`. Call again with `dry_run=false` only after the user says yes.
+- `eggs_plan_apply` does the same for its Stories: its dry run lists lines "Dev Task X: QC Owner A → B"; show them before applying.
+
 ## User reports (phản ánh)
 - Record: `eggs_triage_open(project, text, source_url, reported_by, reported_at?, assignee?)`. Ask for the message link and who reported it if missing, and in the same question who should handle it (`assignee`, a Jira username). If the user names nobody, leave `assignee` empty: the report stays unassigned.
 - Conclude: `eggs_triage_close(key, verdict, note, time_spent, bug_target?, bug_summary?, link_key?)`. Ask for `time_spent`.
