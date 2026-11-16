@@ -35,3 +35,6 @@ Move a Story with `eggs_story_step(key, step, comment?)`, dry run first like eve
 
 ## Changing a Story's QC Owner
 Open Dev Tasks keep the old QC Owner until synced. After changing it (in Jira or with `eggs_plan_apply`), follow `references/qc.md` "QC Owner of Dev Tasks": dry run, show the list, apply on yes.
+
+## Stories waiting to be split
+The agenda of a Story's assignee lists their Analyzed Stories that have no Dev Task yet ("chưa chia Dev Task"), whatever the assignee's role. Devs create their own Dev Tasks; remind them, then move the Story to Ready For Dev once the Dev Tasks exist.
