@@ -5,7 +5,7 @@ description: Use when the user types /eggs, or talks about their own Jira work a
 
 # /eggs: Jira work through eggs_* tools
 
-Kit version: `2026.11.16.2`
+Kit version: `2026.11.16.3`
 
 The `eggs-jira` MCP server owns every Jira rule. You only route the user to the right `eggs_*` call, ask for missing facts, and confirm before writing. Reply in the user's language (normally Vietnamese).
 
@@ -37,7 +37,7 @@ Every issue key you show the user is a link with its type: `[EGG-12](https://jir
 
 ## Showing the agenda (bare /eggs)
 
-A numbered list, one line per item: `N. <linked key> (<type>) <title>: <say>`. No JSON, no tool names. End with one question asking what to do. A number from the user selects the item, not the action: if the item has more than one action (approve or reject, finish or submit QC), ask which one.
+A numbered list, one line per item: `N. <linked key> (<type>) <title>: <say>`. No JSON, no tool names. After the list, when `agenda_total` is larger than the number of items shown, add one line: `Còn <agenda_total − shown> mục nữa, xem đủ tại [EGGS – Việc của tôi](<agenda_url>).` When the user asks to see everything, give that link instead of listing more. End with one question asking what to do. A number from the user selects the item, not the action: if the item has more than one action (approve or reject, finish or submit QC), ask which one.
 
 ## Arguments
 
